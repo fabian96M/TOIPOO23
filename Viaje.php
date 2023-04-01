@@ -49,11 +49,8 @@ return $this->destino;
                 "DNI" => $dni
             );
             $this->pasajeros[] = $pasajero;
-            return true;
-        } else {
-            return false;
-        }
     }
+}
     //funcion para obtener el indice que coincide con el dni que ingresa por parametro
 public function buscarIndPasajero( $dniPasajero){
     $ind=-1;
