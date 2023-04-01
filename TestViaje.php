@@ -13,7 +13,25 @@ echo(" \n
 $eleccion = trim(fgets(STDIN));
 switch($eleccion){
     case "1":
-    $viajes[count($viajes)]=new Viaje($codigo, $destino, $cantMaxima);
+    $opcion=1;
+    $i=1;
+    $viajeN= datosViaje();
+    
+    //AGREGA PASAJEROS - mientras el usuario no marque 2 o exceda el numero maximo de pasajeros no se detendra el conteo de datos de pasajeros  
+    while($opcion!=2 && $i<=$viajeN->getMaxPasajeros()){
+    echo "ingrese el nombre del pasajero ".$i."\n";
+    $nombreP=trim(fgets(STDIN));
+    echo "ingrese el apellido del pasajero ".$i."\n";
+    $apellidoP=trim(fgets(STDIN));
+    echo "ingrese el DNI del pasajero ".$i."\n";
+    $dniP=trim(fgets(STDIN));
+    $viajeN->agregarPasajero($nombreP,$apellidoP,$dniP);
+    $i++;
+    echo(" 1) para agregar otro pasajero\n
+     2) Para salir \n");
+     $opcion =trim(fgets(STDIN));
+    }
+    $viajes[count($viajes)]= $viajeN;
     case "2":
     //modificar un viaje
     echo "\n Ingrese el numero del viaje que desea modificar ";    
@@ -43,7 +61,6 @@ switch($eleccion){
 }
 //modulo para pedir los datos de un viaje y devolverlos en un arreglo
  function datosViaje(){
-    //agrega un swich para consultar que datos desean agregarse o cambiarse
     echo "\n Ingrese el Código del viaje:\n ";
     $codigo = trim(fgets(STDIN));
     echo " Ingrese el Destino del viaje: \n";
@@ -120,5 +137,4 @@ function modificarViaje($viaje){
             }
 }
 }
-//modulo para pedir los datos de un pasajero y devolverlos en un arreglo
 
