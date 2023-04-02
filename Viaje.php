@@ -81,10 +81,11 @@ public function ModificarDatosPasajero($dniPasajero, $nombre, $apellido){
 }
 public function __toString()
 {
-    $datosViaje = "Codigo viaje: ".$this->codViaje." \n 
-    Destino: ".$this->destino." \n
-    maximo de pasajeros: ".$this->maxPasajeros." \n
-    Cantidad de pasajeros: ".count($this->getPasajeros())."\n";
+    $datosViaje = "\n 
+                  Codigo viaje: ".$this->codViaje." \n 
+                  Destino: ".$this->destino." \n
+                  maximo de pasajeros: ".$this->maxPasajeros." \n
+                  Cantidad de pasajeros: ".count($this->getPasajeros())."\n";
     return $datosViaje;
 }
 

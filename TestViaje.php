@@ -1,17 +1,41 @@
 <?php
 include_once 'Viaje.php';
-
+//instancias de la clase viaje x defecto
 $viaje1 = new Viaje('f31n','villa traful', 8);
+$viaje2 = new Viaje('qwert','villa gessell', 5);
+$viaje3 = new Viaje('gfdsa','villa regina', 6);
+//creamos e instanciamos arreglos de pasajeros
+$p1=array('nombre'=>"Dinora" , 'Rosalez'=>"Juarez", 'DNI'=>908765);
+$p2=array('nombre'=>"juan" , 'apellido'=>"perez", 'DNI'=>8079672);
+$p3=array('nombre'=> "Ricardo", 'apellido'=>"Tapia", 'DNI'=>906986);
+$p4=array('nombre'=>"Fernando" , 'apellido'=>"Escandon", 'DNI'=>8076567);
+//asignamos pasajeros en los viajes instanciados
+$viaje1->setPasajero($p1,count($viaje1->getPasajeros()));
+$viaje1->setPasajero($p2,count($viaje1->getPasajeros()));
+$viaje1->setPasajero($p3,count($viaje1->getPasajeros()));
+$viaje1->setPasajero($p4,count($viaje1->getPasajeros()));
+//creacion de un arreglo para almacenar los viajes
 $viajes = array();
+//se asignan las instancias al arreglo creado dentro de las primeras posiciones
 $viajes[0] = $viaje1;
-echo(" \n
+$viajes[1] = $viaje2;
+$viajes[2] = $viaje3;
+//el menu principal se cargara hasta que el usuario ingrese un numero 4
+$eleccion=0;
+while($eleccion!=4){
+    echo(" \n
+    //////////////////////////////////////////////////\n
  A continuacion elija una de las siguientes opciones: \n
 1) para cargar informacion de un viaje \n
 2) Para modificar un viaje \n
 3) Para ver los datos de un viaje \n
+4) Para salir \n
+////////////////////////////////////////////////////
 ");
+//se recibe por entrada y se asigna como numero de eleccion
 $eleccion = trim(fgets(STDIN));
 switch($eleccion){
+    ////////////////////////////////////////////////////////////////////////
     case "1":
     $opcion=1;
     $i=1;
@@ -19,7 +43,7 @@ switch($eleccion){
     
     //AGREGA PASAJEROS - mientras el usuario no marque 2 o exceda el numero maximo de pasajeros no se detendra el conteo de datos de pasajeros  
     while($opcion!=2 && $i<=$viajeN->getMaxPasajeros()){
-    echo "ingrese el nombre del pasajero ".$i."\n";
+    echo "\n ingrese el nombre del pasajero ".$i."\n";
     $nombreP=trim(fgets(STDIN));
     echo "ingrese el apellido del pasajero ".$i."\n";
     $apellidoP=trim(fgets(STDIN));
@@ -27,14 +51,18 @@ switch($eleccion){
     $dniP=trim(fgets(STDIN));
     $viajeN->agregarPasajero($nombreP,$apellidoP,$dniP);
     $i++;
-    echo(" 1) para agregar otro pasajero\n
-     2) Para salir \n");
+    echo("\n //////////////////////////////////////////\n
+             1) para agregar otro pasajero\n
+             2) Para salir \n
+             /////////////////////////////////////////");
      $opcion =trim(fgets(STDIN));
     }
     $viajes[count($viajes)]= $viajeN;
+    break;
+    ////////////////////////////////////////////////////////////////////////
     case "2":
     //modificar un viaje
-    echo "\n Ingrese el numero del viaje que desea modificar ";    
+    echo "\n Ingrese el numero del viaje que desea modificar \n ";    
     $numeroViaje = trim(fgets(STDIN));
     modificarViaje($viajes[$numeroViaje]);
     if($numeroViaje< count($viajes) && $numeroViaje>0){
@@ -43,38 +71,46 @@ switch($eleccion){
     $viajes[$numeroViaje]->setDestino = $viajeN->getDestino();
     $viajes[$numeroViaje]->setMaxPasajeros = $viajeN->getMaxPasajeros();
     while($viajeN->getMaxPasajeros()>$i){
-    echo "\n ingrese el nombre del pasajero ".$i."\n";
+    echo "////////////////////////////////////////////\n
+         ingrese el nombre del pasajero ".$i."\n";
     echo "\n ingrese el apellido del pasajero ".$i."\n";
-    echo "\n ingrese el nombre del pasajero ".$i."\n";
+    echo "\n ingrese el nombre del pasajero ".$i."\n
+    /////////////////////////////////////////////////";
     
     }
     }
     else{
-        echo("\n el numero no coincide con el rango de viajes almacenados");
+        echo("\n el numero no coincide con el rango de viajes almacenados \n");
     }
-    
+    break;
+    ////////////////////////////////////////////////////////////////////////
     case "3":  
     //ver los datos de un viaje
-    echo "escriba el numero del viaje que desea conocer";
+    echo "\n escriba el numero del viaje que desea conocer \n";
     $indice = trim(fgets(STDIN));
     echo $viajes[$indice]->__toString();
+    break;
 }
+}
+/**\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ */
 //modulo para pedir los datos de un viaje y devolverlos en un arreglo
  function datosViaje(){
     echo "\n Ingrese el Código del viaje:\n ";
     $codigo = trim(fgets(STDIN));
-    echo " Ingrese el Destino del viaje: \n";
+    echo " \n Ingrese el Destino del viaje: \n";
     $destino = trim(fgets(STDIN));
-    echo "Ingrese la Cantidad máxima de pasajeros: \n";
+    echo "\n Ingrese la Cantidad máxima de pasajeros: \n";
     $cantMaxima = trim(fgets(STDIN));
     $viajeN = new Viaje($codigo, $destino, $cantMaxima);
     return $viajeN;
 }
+/**\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ */
 //modulo para modificar un viaje
 function modificarViaje($viaje){
         $opcion = 0;
         while ($opcion != 5) {
-            echo "¿Qué desea modificar?\n";
+            echo "\n 
+            ¿Qué desea modificar?\n";
             echo "1. Código de viaje\n";
             echo "2. Destino\n";
             echo "3. Cantidad máxima de pasajeros\n";
@@ -114,16 +150,18 @@ function modificarViaje($viaje){
                     //modifica los datos de un pasajero
                     $bandera = true;
                     while($bandera){
-                    echo "ingrese el dni del pasajero que quiera modificar";
+                    echo "\n ingrese el dni del pasajero que quiera modificar\n";
                     $dniPas= trim(fgets(STDIN));
-                    echo "ingrese el nombre a asignar";
+                    echo "ingrese el nombre a asignar\n";
                     $nombre= trim(fgets(STDIN));
-                    echo "ingrese el apellido a asignar";
+                    echo "ingrese el apellido a asignar\n";
                     $apellido= trim(fgets(STDIN));
                     $viaje->ModificarDatosPasajero($dniPas, $nombre, $apellido);
-                    echo("desea modificar otro pasajero? \n
+                    echo("\n 
+                    Desea modificar otro pasajero? \n
                     1) si \n
-                    2) no \n");
+                    2) no \n
+                    ////////////////////////////////////////\n");
                     $respuesta = trim(fgets(STDIN));
                     if($respuesta != 1){
                         $bandera=false;
@@ -131,8 +169,6 @@ function modificarViaje($viaje){
 
 
                 }
-                    break;
-                case "5":
                     break;
             }
 }
