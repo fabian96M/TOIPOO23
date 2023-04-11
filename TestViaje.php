@@ -5,7 +5,7 @@ $viaje1 = new Viaje('f31n','villa traful', 8);
 $viaje2 = new Viaje('qwert','villa gessell', 5);
 $viaje3 = new Viaje('gfdsa','villa regina', 6);
 //creamos e instanciamos arreglos de pasajeros
-$p1=array('nombre'=>"Dinora" , 'Rosalez'=>"Juarez", 'DNI'=>908765);
+$p1=array('nombre'=>"Dinora" , 'apellido'=>"Juarez", 'DNI'=>908765);
 $p2=array('nombre'=>"juan" , 'apellido'=>"perez", 'DNI'=>8079672);
 $p3=array('nombre'=> "Ricardo", 'apellido'=>"Tapia", 'DNI'=>906986);
 $p4=array('nombre'=>"Fernando" , 'apellido'=>"Escandon", 'DNI'=>8076567);
@@ -41,7 +41,7 @@ switch($eleccion){
     $i=1;
     $viajeN= datosViaje();
     
-    //AGREGA PASAJEROS - mientras el usuario no marque 2 o exceda el numero maximo de pasajeros no se detendra el conteo de datos de pasajeros  
+    /**AGREGA PASAJEROS - mientras el usuario no marque 2 o exceda el numero maximo de pasajeros no se detendra el conteo de datos de pasajeros  */
     while($opcion!=2 && $i<=$viajeN->getMaxPasajeros()){
     echo "\n ingrese el nombre del pasajero ".$i."\n";
     $nombreP=trim(fgets(STDIN));
@@ -64,7 +64,7 @@ switch($eleccion){
     //modificar un viaje
     echo "\n Ingrese el numero del viaje que desea modificar \n ";    
     $numeroViaje = trim(fgets(STDIN));
-    modificarViaje($viajes[$numeroViaje]);
+    modificarViaje($viajes[$numeroViaje-1]);
     if($numeroViaje< count($viajes) && $numeroViaje>0){
     $viajeN=  datosViaje();
     $viajes[$numeroViaje]->setCodViaje= $viajeN->getCodViaje();
@@ -88,7 +88,7 @@ switch($eleccion){
     //ver los datos de un viaje
     echo "\n escriba el numero del viaje que desea conocer \n";
     $indice = trim(fgets(STDIN));
-    echo $viajes[$indice]->__toString();
+    echo $viajes[$indice+1]->__toString();
     break;
 }
 }
@@ -108,7 +108,7 @@ switch($eleccion){
 //modulo para modificar un viaje
 function modificarViaje($viaje){
         $opcion = 0;
-        while ($opcion != 5) {
+        while ($opcion != '5') {
             echo "\n 
             ¿Qué desea modificar?\n";
             echo "1. Código de viaje\n";
@@ -120,28 +120,28 @@ function modificarViaje($viaje){
             switch($opcion){
                 case "1":
                     //modifica codigo viaje
-                    echo "ingrese el nuevo codigo de viaje";
-                    $viaje->setCodigoViaje(trim(fgets(STDIN)));
+                    echo "ingrese el nuevo codigo de viaje\n";
+                    $viaje->setCodViaje(trim(fgets(STDIN)));
                     break;
                 case "2":
                     //modifica destino 
-                    echo "ingrese el nuevo destino de viaje";
+                    echo "ingrese el nuevo destino de viaje\n";
                     $viaje->setDestino(trim(fgets(STDIN)));
                     break;
                 case "3":
                     //modifica cantidad maxima de pasajeros
-                    $maxNoConcedida=true;
+                    $maxNoValida=true;
                     $nMaxima=0;
-                    while($maxNoConcedida){
-                    echo "ingrese una nueva cantidad maxima de pasajeros";
+                    while($maxNoValida){
+                    echo "ingrese una nueva cantidad maxima de pasajeros\n";
                     $nMaxima=trim(fgets(STDIN));
-                    if($nMaxima< count($viaje->getPasajeros)){
-                        echo "la maxima es menor a ".count($viaje->getPasajeros).", que es el numero de pasajeros cargados";
+                    if($nMaxima< count($viaje->getPasajeros())){
+                        echo "\n la maxima es menor a ".count($viaje->getPasajeros).", que es el numero de pasajeros cargados";
                     }
                     else{
                         $viaje->setMaxPasajeros($nMaxima);
                         echo "la nueva maxima se establecio";
-                        $maxNoConcedida=false;
+                        $maxNoValida=false;
                     }
 
                 }
@@ -149,6 +149,7 @@ function modificarViaje($viaje){
                 case "4":
                     //modifica los datos de un pasajero
                     $bandera = true;
+                    $comprobacion=false;
                     while($bandera){
                     echo "\n ingrese el dni del pasajero que quiera modificar\n";
                     $dniPas= trim(fgets(STDIN));
@@ -156,7 +157,13 @@ function modificarViaje($viaje){
                     $nombre= trim(fgets(STDIN));
                     echo "ingrese el apellido a asignar\n";
                     $apellido= trim(fgets(STDIN));
-                    $viaje->ModificarDatosPasajero($dniPas, $nombre, $apellido);
+                    $comprobacion = $viaje->ModificarDatosPasajero($dniPas, $nombre, $apellido);
+                    if($comprobacion){
+                        echo"\n El pasajero se modifico ";
+                    }
+                    else{
+                        echo"\n El pasajero no fue encontrado. Por favor reintentelo";
+                    }
                     echo("\n 
                     Desea modificar otro pasajero? \n
                     1) si \n
